@@ -10,14 +10,14 @@
 int main(int argc, char *argv[]){
   QApplication app(argc, argv);
   
-  Gui *G = new Gui();
+  Gui G;
   Socket *S = new Socket();
   Mainapp *M = new Mainapp();
 
-  M->setGui(G);
+  M->setGui(&G);
   M->setSocket(S);
 
-  G->show();
+  G.show();
   
   return app.exec();
 }
