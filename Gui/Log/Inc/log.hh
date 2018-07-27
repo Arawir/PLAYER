@@ -26,6 +26,13 @@ public:
 private:
   QString ToSend;
 
+  QVBoxLayout *MainLayout;
+
+  QWidget *SelectServerWidget;
+  QWidget *SelectNameWidget;
+  QWidget *SelectRoleWidget;
+  QWidget *WaitWidget;
+  
   QVBoxLayout *SelectServerLayout;
   QVBoxLayout *SelectNameLayout;
   QVBoxLayout *SelectRoleLayout;

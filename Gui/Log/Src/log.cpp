@@ -1,9 +1,17 @@
 #include "Gui/Log/Inc/log.hh"
 
+#include <QThread>
 ////////////////////////////////////////////////////////////////////////////////
 //FUNCTIONS
 Log::Log(QWidget *parent){
 
+  MainLayout = new QVBoxLayout();
+
+  SelectServerWidget = new QWidget();
+  SelectNameWidget = new QWidget();
+  SelectRoleWidget = new QWidget();
+  WaitWidget = new QWidget();
+  
   SelectServerLayout = new QVBoxLayout();
   SelectNameLayout = new QVBoxLayout();
   SelectRoleLayout = new QVBoxLayout();
@@ -41,8 +49,21 @@ Log::Log(QWidget *parent){
   WaitLabel = new QLabel("Waiting for other players");
   WaitLayout->addWidget(WaitLabel);
 
+
+  SelectServerWidget->setLayout(SelectServerLayout);
+  SelectNameWidget->setLayout(SelectNameLayout);
+  SelectRoleWidget->setLayout(SelectRoleLayout);
+  WaitWidget->setLayout(WaitLayout);
   
-  setLayout(SelectServerLayout);
+  MainLayout->addWidget(SelectServerWidget);
+  MainLayout->addWidget(SelectNameWidget);
+  MainLayout->addWidget(SelectRoleWidget);
+  MainLayout->addWidget(WaitWidget);
+
+  WaitWidget->hide();
+  SelectRoleWidget->hide();
+  SelectNameWidget->hide();
+  setLayout(MainLayout);
 }
 
 QString Log::toSend(){
@@ -59,21 +80,30 @@ void Log::setFreeRoles(QStringList L){
 }
 
 void Log::setServer(){
-  setLayout(SelectNameLayout);
+  SelectServerWidget->hide();
+  SelectNameWidget->show();
+  //  QThread::msleep(100);
+  // ToSend = "SET_PHASE_|_CONFIGURE";
+  // emit somethingToSendSig();
 }
 
 void Log::setName(){
-  setLayout(SelectRoleLayout);
+  SelectNameWidget->hide();
+  SelectRoleWidget->show();
   ToSend = "FREE_ROLES";
   emit somethingToSendSig();
 }
 
 void Log::setRole(){
-  setLayout(WaitLayout);
+  SelectRoleWidget->hide();
+  WaitWidget->show();
+
+  ToSend = "SET_PHASE_|_READY_TO_START";
+  emit somethingToSendSig();
 }
 
 void Log::debug(){
-  qDebug() << "TODO"; 
+  qDebug() << "TODO log"; 
 }
 ////////////////////////////////////////////////////////////////////////////////
 //SLOTS
@@ -88,7 +118,9 @@ void Log::selectNameSlot(){
 }
 
 void Log::back1Slot(){
-  setLayout(SelectServerLayout);
+  //  MainLayout->removeWidget(SelectNameWidget);
+  //  MainLayout->addWidget(SelectServerWidget);
+  qDebug() << "Polapka";
 }
 
 void Log::selectRoleSlot(){
@@ -97,5 +129,6 @@ void Log::selectRoleSlot(){
 }
 
 void Log::back2Slot(){
-  setLayout(SelectNameLayout);
+  SelectRoleWidget->hide();
+  SelectNameWidget->show();
 }

@@ -1,5 +1,5 @@
-#ifndef GOLD_HH
-#define GOLD_HH
+#ifndef CARD_HH
+#define CARD_HH
 
 #include <QCoreApplication>
 #include <QMainWindow>

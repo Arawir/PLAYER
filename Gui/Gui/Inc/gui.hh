@@ -11,6 +11,9 @@
 #include <QDebug>
 
 #include "Gui/Log/Inc/log.hh"
+#include "Gui/Bank/Inc/bank.hh"
+#include "Gui/Deck/Inc/deck.hh"
+#include "Gui/Mailbox/Inc/mailbox.hh"
 
 ////////////////////////////////////////////////////////////////////////////////
 class Gui : public QWidget{
@@ -18,29 +21,37 @@ Q_OBJECT
 public:
   explicit Gui(QWidget *parent = nullptr);
 
-  void setId(QString i);
+  void setId(QString i); // setServer()
   void setName(QString n);
   void setRole(QString r);
   void setFreeRoles(QStringList List);
 
-  QString toSend();
+  QString pullMessage();
+  bool isEmpty();
+
+  void start();
   
   void debug();
 
 private:
   Log *L = nullptr;
+  Bank *B = nullptr;
+  Deck *D = nullptr;
+  Mailbox *M = nullptr;
   
   QPushButton *DebugButton;
   QVBoxLayout *MainLayout;
-
-  QString ToSend; // mainly for Log::
+  QHBoxLayout *TopLayout;
+  QHBoxLayout *BottomLayout;
+  
+  QStringList ToSend;
 
 signals:
   void somethingToSendSig();
-		
+  void debugSig();	
 private slots:
   void debugSlot();
-  void somethingToSendSlot();
+  void somethingToSendLogSlot();
 };
 ////////////////////////////////////////////////////////////////////////////////
 #endif
